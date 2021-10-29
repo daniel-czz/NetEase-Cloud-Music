@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
-import { Banner, HotTag, SongSheet } from 'src/app/services/data-types/common.types';
-import { HomeService } from 'src/app/services/home.service';
+import { map } from 'rxjs/internal/operators';
+import { Banner, HotTag, SongSheet, Singer } from 'src/app/services/data-types/common.types';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,20 @@ import { HomeService } from 'src/app/services/home.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private homeService: HomeService) {
-    this.getBanners();
-    this.getHotTags();
-    this.getPoersonalizedSheetList();
-   }
+  constructor(private route: ActivatedRoute) {
+                this.route.data.pipe(map(res => res.homeDatas)).subscribe( ([banners, hotTags, songSheetList, singers]) => { //利用结构赋值
+                  // console.log( "res: " + JSON.stringify(res));
+                  this.banners = banners;
+                  this.hotTags = hotTags;
+                  this.songSheetList = songSheetList;
+                  this.singers = singers;
+                  console.log(this.banners);
+                });
+                // this.getBanners();
+                // this.getHotTags();
+                // this.getPoersonalizedSheetList();
+                // this.getEnterSinger();
+              }
 
   ngOnInit(): void {
   }
@@ -23,6 +33,7 @@ export class HomeComponent implements OnInit {
   carouselActiveIndex = 0;
   hotTags: HotTag[] = []; //热门歌单分类
   songSheetList: SongSheet[] = []; //推荐歌单
+  singers: Singer[] = []; //入驻歌手
 
   // 引入走马灯component
   @ViewChild(NzCarouselComponent, {static: true }) private nzCarousel!: NzCarouselComponent;  
@@ -41,34 +52,40 @@ export class HomeComponent implements OnInit {
     this.nzCarousel[type]();  
   }
 
-  private getBanners(){
-    this.homeService.getBanners().subscribe( banners => {
-      // console.log( "banner: " + JSON.stringify(banners) )
-      this.banners = banners;
-    })
-  }
+  // private getBanners(){
+  //   this.homeService.getBanners().subscribe( banners => {
+  //     // console.log( "banner: " + JSON.stringify(banners) )
+  //     this.banners = banners;
+  //   })
+  // }
 
 
-  //获取热门歌单分类--------------------------------------------------------------------------------
-  private getHotTags(){
-    this.homeService.getHotTags().subscribe(tags => {
-        this.hotTags = tags;
-        console.log(this.hotTags);
-      })
+  // //获取热门歌单分类--------------------------------------------------------------------------------
+  // private getHotTags(){
+  //   this.homeService.getHotTags().subscribe(tags => {
+  //       this.hotTags = tags;
+  //       // console.log(this.hotTags);
+  //     })
     
-  }
+  // }
 
-  //获取推荐歌单--------------------------------------------------------------------------------
-  private getPoersonalizedSheetList(){
-    this.homeService.getPersonalSheetList().subscribe(sheets => {
-        this.songSheetList = sheets;
-        console.log(this.songSheetList);
-      });
-  }
+  // //获取推荐歌单--------------------------------------------------------------------------------
+  // private getPoersonalizedSheetList(){
+  //   this.homeService.getPersonalSheetList().subscribe(sheets => {
+  //       this.songSheetList = sheets;
+  //       console.log(this.songSheetList);
+  //     });
+  // }
 
+  // //获取推荐歌单--------------------------------------------------------------------------------
+  // private getEnterSinger(){
+  //   this.singerService.getEnterSinger().subscribe(singer => {
+  //       this.singers = singer;
+  //       console.log("the singers: ")
+  //       console.log(this.singers);
+  //     });
+  // }
 
-  
 }
-
 
 
