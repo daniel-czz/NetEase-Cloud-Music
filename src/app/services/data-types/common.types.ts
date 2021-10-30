@@ -21,12 +21,27 @@ export type SongSheet = {
     name: string;
     playCount: number;
     picUrl: string;
+    tracks: Song[];
 }
 
-//
+//入驻歌手
 export type Singer = {
     id: number;
     name: string;
     picUrl: string;
     musicSize?: number;
+}
+
+//歌曲
+export type Song = {
+    id: number;
+    name: string;
+    url: string;
+    ar: Singer[]; //歌手 数组
+    al:{
+        id: number;
+        name: string;
+        picUrl: string;
+    } //专辑信息 数组
+    dt: number;
 }

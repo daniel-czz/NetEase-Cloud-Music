@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
 import { map } from 'rxjs/internal/operators';
 import { Banner, HotTag, SongSheet, Singer } from 'src/app/services/data-types/common.types';
+import { SheetService } from 'src/app/services/sheet.service';
+
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,8 @@ import { Banner, HotTag, SongSheet, Singer } from 'src/app/services/data-types/c
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              private sheetServices: SheetService) {
                 this.route.data.pipe(map(res => res.homeDatas)).subscribe( ([banners, hotTags, songSheetList, singers]) => { //利用结构赋值
                   // console.log( "res: " + JSON.stringify(res));
                   this.banners = banners;
@@ -34,6 +37,7 @@ export class HomeComponent implements OnInit {
   hotTags: HotTag[] = []; //热门歌单分类
   songSheetList: SongSheet[] = []; //推荐歌单
   singers: Singer[] = []; //入驻歌手
+  
 
   // 引入走马灯component
   @ViewChild(NzCarouselComponent, {static: true }) private nzCarousel!: NzCarouselComponent;  
@@ -86,6 +90,13 @@ export class HomeComponent implements OnInit {
   //     });
   // }
 
+  //获取歌单内的多有歌曲
+  onPlaySheet(id: number){ 
+    console.log("this is the id: " + id);
+    this.sheetServices.getSongSheetDetail(id).subscribe( sheetDetail => {
+      console.log("sheetDetail: " , sheetDetail);
+    })
+  }
 }
 
 
