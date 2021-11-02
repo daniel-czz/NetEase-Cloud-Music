@@ -93,7 +93,10 @@ export class HomeComponent implements OnInit {
   //获取歌单内的多有歌曲
   onPlaySheet(id: number){ 
     console.log("this is the id: " + id);
-    this.sheetServices.getSongSheetDetail(id).subscribe( sheetDetail => {
+    // this.sheetServices.getSongSheetDetail(id).subscribe( sheetDetail => {
+    //   console.log("sheetDetail: " , sheetDetail);
+    // })
+    this.sheetServices.playSheet(id).subscribe( sheetDetail => {
       console.log("sheetDetail: " , sheetDetail);
     })
   }

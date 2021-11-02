@@ -45,3 +45,9 @@ export type Song = {
     } //专辑信息 数组
     dt: number;
 }
+
+//歌曲播放地址
+export type SongUrl = {
+    id: number;
+    url: string;
+}
